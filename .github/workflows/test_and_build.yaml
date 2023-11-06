@@ -52,6 +52,7 @@ jobs:
         run: yarn e2e:ci"
 
       - name: Send Telegram Notification
+        if: always()
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_USER }}
