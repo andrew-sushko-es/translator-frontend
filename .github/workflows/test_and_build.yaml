@@ -62,6 +62,6 @@ jobs:
             
             Repository: ${{ github.repository }}
             
-            See actions: https://github.com/${{ github.repository }}/actions/runs${{github.run_id}} | ${{github.workflow}} workflow run > ${{job.status}}
+            See actions: https://github.com/${{ github.repository }}/actions/runs/${{github.run_id}} | ${{github.workflow}} workflow run > ${{job.status}}
       
           
