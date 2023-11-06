@@ -1,0 +1,66 @@
+name: Test/Build workflow
+
+run-name: "Test/Build Application by @${{github.actor}}, event: ${{github.event_name}}"
+
+on:
+  workflow_call:
+
+jobs:
+  test-and-build-app:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: mskelton/setup-yarn@v1
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: yarn install
+
+      - name: Check Linting
+        run: yarn lint
+      
+      - name: Build App
+        run: yarn build
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: dist/
+
+      - name: Run Unit Tests
+        run: yarn test
+      
+      - name: Upload Test Coverage Artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: coverage
+          path: coverage/
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Run e2e Tests
+        run: yarn e2e:ci"
+
+      - name: Send Telegram Notification
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_USER }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            ${{ github.actor }} run build and test job
+            
+            Repository: ${{ github.repository }}
+            
+            See actions: https://github.com/${{ github.repository }}/actions/runs${{github.run_id}} | ${{github.workflow}} workflow run > ${{job.status}}
+      
+          

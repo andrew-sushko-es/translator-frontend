@@ -15,5 +15,21 @@ export default defineConfig({
         alias: {
             '@': resolvePath(`${BASE_PATH}`)
         }
+    },
+    build: {
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    console.log(id)
+                    // creating a chunk to react routes deps. Reducing the vendor chunk size
+                    if (id.includes('chakra-ui')) {
+                        return '@chakra'
+                    }
+                    if (id.includes('react-router-dom') || id.includes('react-router')) {
+                        return '@react-router'
+                    }
+                }
+            }
+        }
     }
 })

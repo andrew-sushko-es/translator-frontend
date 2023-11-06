@@ -3,7 +3,7 @@ import React from 'react'
 interface Props {}
 
 const ErrorPage: React.FC<Props> = () => {
-    return <div>Error</div>
+    return <h1>Error</h1>
 }
 
 export default ErrorPage

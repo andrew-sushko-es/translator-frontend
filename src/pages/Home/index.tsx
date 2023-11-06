@@ -3,7 +3,7 @@ import React from 'react'
 interface Props {}
 
 const HomePage: React.FC<Props> = () => {
-    return <div>Hello Home</div>
+    return <h1>Hello Home</h1>
 }
 
 export default HomePage
